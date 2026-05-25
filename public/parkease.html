@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ParkEase - Premium Parking</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+:root {
+  --bg-main: #0B0F19;
+  --bg-panel: #1A2235;
+  --bg-panel-hover: #252f46;
+  --primary: #3B82F6;
+  --primary-hover: #2563EB;
+  --success: #10B981;
+  --danger: #EF4444;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --border: #2E3A59;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; }
+header { background: rgba(26, 34, 53, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.brand { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; letter-spacing: -0.5px; }
+.brand-icon { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 8px; font-weight: 800; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+.btn { background-color: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
+.btn:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+.btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
+.btn-outline:hover { background-color: rgba(255, 255, 255, 0.05); border-color: var(--text-muted); }
+.container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+.grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+@media (max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
+.panel { background-color: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.panel h2 { margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+.parking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; }
+.spot { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+.spot span { font-size: 0.75rem; font-weight: 400; opacity: 0.8; margin-top: 0.3rem; }
+.spot.free { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success); }
+.spot.free:hover { background: rgba(16, 185, 129, 0.2); border-color: var(--success); transform: scale(1.05); }
+.spot.taken, .spot.occupied { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger); cursor: not-allowed; opacity: 0.6; }
+.spot.selected { background: var(--primary); border-color: var(--primary-hover); color: white; transform: scale(1.05); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); }
+.form-input { width: 100%; padding: 0.8rem 1rem; background-color: rgba(11, 15, 25, 0.5); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; transition: border-color 0.2s; font-size: 1rem; }
+.form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+.admin-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.admin-table th { text-align: left; padding: 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
+.admin-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.admin-table tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
+.status-badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
+.status-badge.free { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+.status-badge.taken, .status-badge.occupied { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+#admin-view { display: none; }
+</style>
+</head>
+<body>
+
+<div id="user-view">
+  <header>
+    <div class="brand"><span class="brand-icon">P</span> ParkEase</div>
+    <button class="btn btn-outline" id="btn-go-admin">⚙️ Administration</button>
+  </header>
+  <div class="container">
+    <div class="grid-layout">
+      <div class="panel">
+        <h2>🗺️ Plan du Parking (Zone A)</h2>
+        <div class="parking-grid" id="user-parking-grid"></div>
+      </div>
+      <div class="panel">
+        <h2>🎫 Nouvelle Réservation</h2>
+        <div class="form-group">
+          <label>Place sélectionnée</label>
+          <input type="text" class="form-input" id="selected-spot-display" readonly placeholder="Cliquez sur une place libre">
+        </div>
+        <div class="form-group">
+          <label>Plaque d'immatriculation</label>
+          <input type="text" class="form-input" id="plate-input" placeholder="AA-123-BB">
+        </div>
+        <div class="form-group">
+          <label>Heure d'arrivée prévue</label>
+          <input type="time" class="form-input" id="time-input">
+        </div>
+        <button class="btn" id="btn-reserve" style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1.1rem;">Confirmer la réservation</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="admin-view">
+  <header>
+    <div class="brand"><span class="brand-icon" style="background:var(--danger); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);">A</span> ParkEase Admin</div>
+    <button class="btn btn-outline" id="btn-go-user">⬅️ Retour au site</button>
+  </header>
+  <div class="container">
+    <div class="panel">
+      <h2>🎛️ Centre de contrôle des capteurs</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID Place</th>
+            <th>Type</th>
+            <th>Statut Capteur</th>
+            <th>Action Manuelle</th>
+          </tr>
+        </thead>
+        <tbody id="admin-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+let spots = [];
+let selectedSpotId = null;
+
+const userView = document.getElementById('user-view');
+const adminView = document.getElementById('admin-view');
+const btnGoAdmin = document.getElementById('btn-go-admin');
+const btnGoUser = document.getElementById('btn-go-user');
+const userParkingGrid = document.getElementById('user-parking-grid');
+const adminTableBody = document.getElementById('admin-table-body');
+const selectedSpotDisplay = document.getElementById('selected-spot-display');
+const btnReserve = document.getElementById('btn-reserve');
+
+async function chargerPlaces() {
+  try {
+    const reponse = await fetch('/api/spots');
+    const donnees = await reponse.json();
+    spots = donnees;
+    renderUserGrid();
+    renderAdminTable();
+  } catch (erreur) {
+    console.error(erreur);
+  }
+}
+
+async function syncWithHardwareAPI(spotId) {
+  try {
+    await fetch(`/api/spots/${spotId}/toggle`, {
+      method: 'POST'
+    });
+    chargerPlaces();
+  } catch (erreur) {
+    console.error(erreur);
+  }
+}
+
+function renderUserGrid() {
+  userParkingGrid.innerHTML = '';
+  spots.forEach(spot => {
+    const div = document.createElement('div');
+    div.className = `spot ${spot.status}`;
+    if (spot.id === selectedSpotId) {
+      div.classList.add('selected');
+    }
+    
+    div.innerHTML = `${spot.id}<br><span>${spot.type || 'Standard'}</span>`;
+    
+    div.addEventListener('click', () => {
+      if (spot.status === 'free') {
+        selectedSpotId = spot.id;
+        selectedSpotDisplay.value = spot.id;
+        renderUserGrid();
+      }
+    });
+    
+    userParkingGrid.appendChild(div);
+  });
+}
+
+function renderAdminTable() {
+  adminTableBody.innerHTML = '';
+  spots.forEach(spot => {
+    const tr = document.createElement('tr');
+    
+    const tdId = document.createElement('td');
+    tdId.textContent = spot.id;
+    tdId.style.fontWeight = '700';
+    tdId.style.color = 'var(--text-main)';
+    
+    const tdType = document.createElement('td');
+    tdType.textContent = spot.type || 'Standard';
+    
+    const tdStatus = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = `status-badge ${spot.status}`;
+    badge.innerHTML = spot.status === 'free' ? '🟢 Libre' : '🔴 Occupée';
+    tdStatus.appendChild(badge);
+    
+    const tdAction = document.createElement('td');
+    const btnToggle = document.createElement('button');
+    btnToggle.className = 'btn btn-outline';
+    btnToggle.style.padding = '0.4rem 0.8rem';
+    btnToggle.style.fontSize = '0.85rem';
+    btnToggle.textContent = 'Inverser état';
+    btnToggle.addEventListener('click', () => {
+      syncWithHardwareAPI(spot.id);
+    });
+    tdAction.appendChild(btnToggle);
+    
+    tr.appendChild(tdId);
+    tr.appendChild(tdType);
+    tr.appendChild(tdStatus);
+    tr.appendChild(tdAction);
+    
+    adminTableBody.appendChild(tr);
+  });
+}
+
+btnGoAdmin.addEventListener('click', () => {
+  userView.style.display = 'none';
+  adminView.style.display = 'block';
+});
+
+btnGoUser.addEventListener('click', () => {
+  adminView.style.display = 'none';
+  userView.style.display = 'block';
+});
+
+btnReserve.addEventListener('click', () => {
+  if (!selectedSpotId) {
+    alert('Veuillez sélectionner une place libre sur le plan.');
+    return;
+  }
+  alert(`Simulation : Réservation envoyée pour la place ${selectedSpotId}`);
+  selectedSpotId = null;
+  selectedSpotDisplay.value = '';
+  renderUserGrid();
+});
+
+chargerPlaces();
+</script>
+</body>
+</html>
