@@ -1,9 +1,9 @@
 #include <WiFiS3.h>
 
-char ssid[] = "TON_RESEAU_WIFI";
-char pass[] = "TON_MOT_DE_PASSE";
+char ssid[] = "iPhone de Ayb";
+char pass[] = "12345678";
 
-char server[] = "192.168.X.X";
+char server[] = "192.168.56.1";
 int port = 8001;
 
 int status = WL_IDLE_STATUS;

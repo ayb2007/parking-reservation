@@ -3,130 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ParkEase - Premium Parking</title>
+<title>ParkEase - Réservation de Parking</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-:root {
-  --bg-main: #0B0F19;
-  --bg-panel: #1A2235;
-  --bg-panel-hover: #252f46;
-  --primary: #3B82F6;
-  --primary-hover: #2563EB;
-  --success: #10B981;
-  --danger: #EF4444;
-  --text-main: #F8FAFC;
-  --text-muted: #94A3B8;
-  --border: #2E3A59;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; }
-header { background: rgba(26, 34, 53, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-.brand { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; letter-spacing: -0.5px; }
-.brand-icon { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 8px; font-weight: 800; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
-.btn { background-color: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
-.btn:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-.btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
-.btn-outline:hover { background-color: rgba(255, 255, 255, 0.05); border-color: var(--text-muted); }
-.container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-.grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-@media (max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
-.panel { background-color: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-.panel h2 { margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
-.parking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; }
-.spot { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
-.spot span { font-size: 0.75rem; font-weight: 400; opacity: 0.8; margin-top: 0.3rem; }
-.spot.free { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: var(--success); }
-.spot.free:hover { background: rgba(16, 185, 129, 0.2); border-color: var(--success); transform: scale(1.05); }
-.spot.taken, .spot.occupied { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: var(--danger); cursor: not-allowed; opacity: 0.6; }
-.spot.selected { background: var(--primary); border-color: var(--primary-hover); color: white; transform: scale(1.05); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
-.form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); }
-.form-input { width: 100%; padding: 0.8rem 1rem; background-color: rgba(11, 15, 25, 0.5); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; transition: border-color 0.2s; font-size: 1rem; }
-.form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
-.admin-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-.admin-table th { text-align: left; padding: 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; }
-.admin-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-.admin-table tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
-.status-badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block; }
-.status-badge.free { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
-.status-badge.taken, .status-badge.occupied { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
-#admin-view { display: none; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-behavior: smooth; }
+
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; background-color: #ffffff; border-bottom: 1px solid #e1e8ed; position: sticky; top: 0; z-index: 2000; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+.brand { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; color: #2d3436; }
+.brand-icon { background: #0984e3; color: white; padding: 5px 10px; border-radius: 50%; font-weight: 900; }
+.nav-links { display: flex; gap: 30px; list-style: none; align-items: center; }
+.nav-links li a { color: #636e72; text-decoration: none; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+.nav-links li a:hover { color: #0984e3; }
+.nav-links li.active a { color: #0984e3; border-bottom: 2px solid #0984e3; padding-bottom: 5px; }
+.admin-icon { font-size: 1.2rem; cursor: pointer; opacity: 0.3; transition: 0.3s; color: #2d3436; }
+.admin-icon:hover { opacity: 1; color: #0984e3; }
+
+.section-padding { padding: 80px 50px; max-width: 1400px; margin: 0 auto; }
+.section-title { font-size: 2.5rem; font-weight: 900; text-align: center; margin-bottom: 50px; text-transform: uppercase; color: #2d3436; }
+.section-title span { color: #0984e3; }
+
+.hero-section { display: flex; justify-content: center; align-items: flex-start; gap: 50px; padding: 60px 50px; max-width: 1400px; margin: 0 auto; min-height: 80vh; }
+
+.booking-card { width: 450px; background: #ffffff; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); overflow: hidden; position: relative; z-index: 10; border: 1px solid #f1f2f6; }
+.tabs { display: flex; background: #f5f7fa; }
+.tab { flex: 1; padding: 15px; text-align: center; font-weight: 600; color: #b2bec3; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+.tab.active { background: #ffffff; color: #0984e3; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+.booking-form { padding: 30px; }
+.booking-form p.subtitle { font-size: 0.85rem; font-style: italic; margin-bottom: 20px; color: #636e72; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #2d3436; }
+.form-control { width: 100%; padding: 12px; background-color: #f9fbfd; border: 1px solid #dfe6e9; color: #2d3436; border-radius: 8px; outline: none; transition: 0.3s; font-weight: 500; }
+.form-control:focus { border-color: #0984e3; box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.1); }
+.form-control::placeholder { color: #b2bec3; font-weight: 400; }
+.search-row { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; }
+.price-display { font-size: 1.5rem; font-weight: 800; color: #0984e3; background: #e0f2fe; padding: 10px 20px; border-radius: 8px; width: 45%; text-align: center; }
+.btn-submit { background-color: #0984e3; color: white; border: none; padding: 15px; width: 50%; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; text-align: center; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2); }
+.btn-submit:hover { background-color: #076ebc; transform: translateY(-2px); }
+
+.hero-content { width: 500px; padding-top: 20px; }
+.hero-content h1 { font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 15px; color: #2d3436; }
+.hero-content h1 span { background-color: #0984e3; color: white; padding: 0 10px; border-radius: 5px; display: inline-block; transform: rotate(-2deg); margin-top: 5px; }
+.hero-content > p { font-size: 1.05rem; line-height: 1.6; margin-bottom: 30px; color: #636e72; }
+.features { display: flex; flex-direction: column; gap: 20px; }
+.feature-item { display: flex; align-items: center; gap: 15px; }
+.feature-icon { width: 45px; height: 45px; background: #e0f2fe; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; color: #0984e3; }
+.feature-text h4 { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: #2d3436; }
+.feature-text p { font-size: 0.9rem; color: #636e72; }
+
+.interactive-section { background-color: #ffffff; border-top: 1px solid #f1f2f6; border-bottom: 1px solid #f1f2f6; }
+.zone-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+.btn-zone { background: #ffffff; color: #636e72; border: 2px solid #dfe6e9; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
+.btn-zone:hover { border-color: #0984e3; color: #0984e3; }
+.btn-zone.active { background: #0984e3; border-color: #0984e3; color: white; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2); }
+.parking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; }
+.spot { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; cursor: pointer; border: 2px solid transparent; transition: 0.3s; background: #f9fbfd; }
+.spot span { font-size: 0.8rem; font-weight: 500; margin-top: 5px; }
+.spot.free { background: #e8f8f5; border-color: #2ecc71; color: #2ecc71; }
+.spot.free:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(46, 204, 113, 0.15); }
+.spot.taken { background: #fff0f0; border-color: #ff7675; color: #ff7675; cursor: not-allowed; opacity: 0.7; }
+.spot.selected { background: #0984e3; color: white; border-color: #0984e3; transform: scale(1.05); box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3); }
+
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.service-card { background: #ffffff; padding: 40px 30px; border-radius: 12px; text-align: center; transition: 0.3s; border: 1px solid #f1f2f6; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.service-card:hover { transform: translateY(-10px); border-color: #0984e3; box-shadow: 0 20px 40px rgba(9, 132, 227, 0.1); }
+.service-icon { font-size: 3.5rem; margin-bottom: 20px; }
+.service-card h3 { margin-bottom: 15px; font-size: 1.2rem; color: #2d3436; font-weight: 800; }
+.service-card p { color: #636e72; font-size: 0.95rem; line-height: 1.6; }
+
+.pro-section { background-color: #fffaf0; border-top: 4px solid #f39c12; }
+.pro-container { display: flex; align-items: center; gap: 50px; }
+.pro-content { flex: 1; }
+.pro-content h3 { font-size: 2.2rem; margin-bottom: 20px; color: #f39c12; font-weight: 900; }
+.pro-content p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px; color: #636e72; }
+.pro-list { list-style: none; margin-bottom: 35px; }
+.pro-list li { margin-bottom: 12px; font-weight: 600; color: #2d3436; display: flex; align-items: center; }
+.pro-list li::before { content: '✓'; color: #f39c12; margin-right: 12px; font-weight: 900; font-size: 1.2rem; background: #ffebd2; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+.tarifs-section { background-color: #ffffff; }
+.pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; max-width: 900px; margin: 0 auto; }
+.pricing-card { background: #ffffff; border-radius: 15px; padding: 40px; text-align: center; border: 1px solid #f1f2f6; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.pricing-card.premium { border-color: #0984e3; transform: scale(1.05); box-shadow: 0 20px 50px rgba(9, 132, 227, 0.15); position: relative; }
+.pricing-card.premium::before { content: 'LE PLUS POPULAIRE'; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #0984e3; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; }
+.pricing-header h3 { font-size: 1.5rem; margin-bottom: 10px; text-transform: uppercase; color: #2d3436; font-weight: 900; }
+.pricing-price { font-size: 3.5rem; font-weight: 900; color: #2d3436; margin-bottom: 25px; }
+.pricing-price span { font-size: 1.2rem; color: #b2bec3; font-weight: 600; }
+.pricing-card.premium .pricing-price { color: #0984e3; }
+.pricing-features { list-style: none; margin-bottom: 35px; text-align: left; }
+.pricing-features li { padding: 12px 0; border-bottom: 1px solid #f1f2f6; color: #636e72; font-weight: 500; }
+.pricing-features li::before { content: '✓'; color: #2ecc71; margin-right: 12px; font-weight: 900; }
+
+.contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; background: #ffffff; padding: 50px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid #f1f2f6; }
+.contact-info h3 { font-size: 1.6rem; margin-bottom: 25px; color: #0984e3; font-weight: 900; }
+.contact-info p { margin-bottom: 15px; color: #636e72; display: flex; align-items: center; gap: 12px; font-size: 1.05rem; font-weight: 500; }
+.contact-form textarea { resize: vertical; min-height: 140px; }
+
+#admin-view { display: none; padding: 60px 50px; max-width: 1200px; margin: 0 auto; background: #ffffff; min-height: 100vh; }
+.admin-table { width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #dfe6e9; }
+.admin-table th, .admin-table td { padding: 18px; text-align: left; border-bottom: 1px solid #f1f2f6; }
+.admin-table th { background: #f9fbfd; color: #2d3436; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; }
+.admin-table td { color: #636e72; font-weight: 500; }
+.badge { padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; }
+.badge.free { background: #e8f8f5; color: #2ecc71; }
+.badge.taken { background: #fff0f0; color: #ff7675; }
+.btn-small { background: #f5f7fa; color: #2d3436; border: 1px solid #dfe6e9; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+.btn-small:hover { background: #0984e3; color: white; border-color: #0984e3; }
+
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 52, 54, 0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 3000; }
+.modal { background: #ffffff; padding: 40px; border-radius: 15px; text-align: center; width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+.modal h2 { margin-bottom: 20px; color: #2d3436; font-weight: 900; }
+.modal input { width: 100%; padding: 12px; margin-bottom: 20px; background: #f9fbfd; border: 1px solid #dfe6e9; color: #2d3436; border-radius: 8px; font-weight: 500; }
+.modal .btn-submit { width: 100%; }
+
+#toast-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 9999; }
+.toast { background: #ffffff; border-left: 5px solid #0984e3; padding: 15px 25px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); color: #2d3436; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease-out forwards; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 </style>
 </head>
 <body>
 
-<div id="user-view">
-  <header>
-    <div class="brand"><span class="brand-icon">P</span> ParkEase</div>
-    <button class="btn btn-outline" id="btn-go-admin">⚙️ Administration</button>
-  </header>
-  <div class="container">
-    <div class="grid-layout">
-      <div class="panel">
-        <h2>🗺️ Plan du Parking (Zone A)</h2>
-        <div class="parking-grid" id="user-parking-grid"></div>
+<nav class="navbar">
+  <div class="brand"><span class="brand-icon">P</span> PARKEASE</div>
+  <ul class="nav-links">
+    <li class="active"><a href="#accueil" onclick="showHome()">Accueil</a></li>
+    <li><a href="#parkings" onclick="showHome()">Parkings</a></li>
+    <li><a href="#services" onclick="showHome()">Services</a></li>
+    <li><a href="#offre-pro" onclick="showHome()" style="color: #f39c12;">Offre Pro</a></li>
+    <li><a href="#tarifs" onclick="showHome()">Tarifs</a></li>
+    <li><a href="#contact" onclick="showHome()">Contact</a></li>
+    <li><span class="admin-icon" onclick="showAdminLogin()">🔒</span></li>
+  </ul>
+</nav>
+
+<div id="main-view">
+  
+  <section id="accueil" class="hero-section">
+    <div class="booking-card">
+      <div class="tabs">
+        <div class="tab active">À L'HEURE</div>
+        <div class="tab">ABONNEMENT</div>
       </div>
-      <div class="panel">
-        <h2>🎫 Nouvelle Réservation</h2>
+      <div class="booking-form">
+        <p class="subtitle">Réservez votre place connectée en quelques clics.</p>
         <div class="form-group">
-          <label>Place sélectionnée</label>
-          <input type="text" class="form-input" id="selected-spot-display" readonly placeholder="Cliquez sur une place libre">
+          <label>Votre adresse de destination</label>
+          <input type="text" class="form-control" placeholder="Pôle Universitaire Léonard de Vinci">
         </div>
         <div class="form-group">
-          <label>Plaque d'immatriculation</label>
-          <input type="text" class="form-input" id="plate-input" placeholder="AA-123-BB">
+          <label>Catégorie de véhicule</label>
+          <select class="form-control">
+            <option>Citadine / Berline</option>
+            <option>Break / Familiale</option>
+            <option>SUV / 4x4</option>
+            <option>Véhicule Électrique</option>
+            <option>Moto / Scooter</option>
+            <option>Utilitaire / Fourgon</option>
+            <option>PMR (Mobilité Réduite)</option>
+          </select>
         </div>
-        <div class="form-group">
-          <label>Heure d'arrivée prévue</label>
-          <input type="time" class="form-input" id="time-input">
+        <div class="search-row">
+          <div class="price-display">2,50 €</div>
+          <a href="#parkings" class="btn-submit">RECHERCHER</a>
         </div>
-        <button class="btn" id="btn-reserve" style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1.1rem;">Confirmer la réservation</button>
       </div>
     </div>
-  </div>
+
+    <div class="hero-content">
+      <h1>VOTRE PLACE DE PARKING <span>SÉCURISÉE</span> ET CONNECTÉE !</h1>
+      <p>Obtenez en quelques clics sur ParkEase un emplacement de stationnement optimisé, relié en temps réel à nos capteurs Arduino R4 WiFi.</p>
+      <div class="features">
+        <div class="feature-item">
+          <div class="feature-icon">🛡️</div>
+          <div class="feature-text">
+            <h4>TEMPS RÉEL 24H/24</h4>
+            <p>Mise à jour instantanée de l'état des places</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚙️</div>
+          <div class="feature-text">
+            <h4>TECHNOLOGIE EMBARQUÉE</h4>
+            <p>Système IoT haute précision</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parkings" class="interactive-section section-padding">
+    <h2 class="section-title">Plan <span>Interactif</span></h2>
+    <p style="text-align: center; color: #636e72; margin-bottom: 40px; font-size: 1.1rem;">Sélectionnez votre emplacement. Les places se mettent à jour automatiquement via nos capteurs.</p>
+    
+    <div class="zone-selector" id="zone-buttons">
+      <button class="btn-zone active" onclick="changeZone('A')">Niveau 1 (Zone A)</button>
+      <button class="btn-zone" onclick="changeZone('B')">Niveau 2 (Zone B)</button>
+      <button class="btn-zone" onclick="changeZone('C')">Niveau 3 (Zone C)</button>
+    </div>
+
+    <div style="max-width: 320px; margin: 0 auto 30px auto;">
+      <input type="text" id="plate-input" class="form-control" placeholder="Votre plaque d'immatriculation" style="text-align: center; font-size: 1.1rem; text-transform: uppercase;">
+    </div>
+    
+    <div class="parking-grid" id="user-parking-grid"></div>
+    
+    <div style="text-align: center;">
+      <button class="btn-submit" id="btn-confirm-spot" style="margin-top: 40px; display: none; width: 320px; font-size: 1.1rem; padding: 18px;">CONFIRMER LA PLACE</button>
+    </div>
+  </section>
+
+  <section id="services" class="section-padding">
+    <h2 class="section-title">Nos <span>Services</span></h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🔌</div>
+        <h3>Recharge Électrique</h3>
+        <p>Des bornes de recharge rapide sont à votre disposition pour vos véhicules électriques ou hybrides.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎥</div>
+        <h3>Vidéosurveillance</h3>
+        <p>Un parc entièrement sécurisé et surveillé 24h/24 pour garantir la sécurité de votre véhicule.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚗</div>
+        <h3>Lavage Auto</h3>
+        <p>Profitez de notre service de nettoyage écologique pendant que votre véhicule est stationné.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="offre-pro" class="pro-section section-padding">
+    <div class="pro-container">
+      <div class="pro-content">
+        <h3>SOLUTIONS B2B & ENTREPRISES</h3>
+        <p>Vous gérez une flotte de véhicules ou vous souhaitez offrir des places garanties à vos collaborateurs ? ParkEase propose des solutions sur-mesure pour les entreprises.</p>
+        <ul class="pro-list">
+          <li>Privatisation d'étages complets (Zone B, Zone C)</li>
+          <li>Interface de gestion de flotte dédiée</li>
+          <li>Facturation mensuelle centralisée</li>
+          <li>Badges d'accès coupe-file illimités</li>
+        </ul>
+        <a href="#contact" class="btn-submit" style="background-color: #f39c12; box-shadow: 0 10px 20px rgba(243, 156, 18, 0.2);">Demander un devis Pro</a>
+      </div>
+      <div style="flex: 1; text-align: center; font-size: 12rem;">
+        🏢
+      </div>
+    </div>
+  </section>
+
+  <section id="tarifs" class="tarifs-section section-padding">
+    <h2 class="section-title">Nos <span>Tarifs</span> Particuliers</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Courte Durée</h3>
+        </div>
+        <div class="pricing-price">2,50€<span>/h</span></div>
+        <ul class="pricing-features">
+          <li>Accès immédiat</li>
+          <li>Places standards</li>
+          <li>Annulation gratuite</li>
+        </ul>
+        <a href="#accueil" class="btn-submit" style="width: 100%; background-color: #f5f7fa; color: #2d3436; box-shadow: none; border: 2px solid #dfe6e9;">Réserver</a>
+      </div>
+      <div class="pricing-card premium">
+        <div class="pricing-header">
+          <h3 style="color: #0984e3;">Abonnement Étudiant</h3>
+        </div>
+        <div class="pricing-price">45€<span>/mois</span></div>
+        <ul class="pricing-features">
+          <li>Accès illimité 24/7</li>
+          <li>Places prioritaires Niveau 1</li>
+          <li>Badge RFID inclus</li>
+        </ul>
+        <a href="#contact" class="btn-submit" style="width: 100%;">Nous contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section-padding">
+    <h2 class="section-title">Nous <span>Contacter</span></h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <h3>Informations Pratiques</h3>
+        <p>📍 Pôle Universitaire Léonard de Vinci, 92400 Courbevoie</p>
+        <p>📞 07 45 24 23 71</p>
+        <p>✉️ contact@parkease.fr</p>
+        <div style="margin-top: 40px;">
+          <h4 style="margin-bottom: 15px; color: #2d3436; font-weight: 800;">Horaires d'ouverture</h4>
+          <p style="color: #636e72;">Lundi - Vendredi : 07h00 - 22h00</p>
+          <p style="color: #636e72;">Week-end : 08h00 - 20h00</p>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Votre nom complet">
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control" placeholder="Votre adresse e-mail">
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" placeholder="Votre message ou demande de devis..."></textarea>
+        </div>
+        <button class="btn-submit" style="width: 100%;" onclick="showToast('Message envoyé avec succès !')">Envoyer le message</button>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <div id="admin-view">
-  <header>
-    <div class="brand"><span class="brand-icon" style="background:var(--danger); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);">A</span> ParkEase Admin</div>
-    <button class="btn btn-outline" id="btn-go-user">⬅️ Retour au site</button>
-  </header>
-  <div class="container">
-    <div class="panel">
-      <h2>🎛️ Centre de contrôle des capteurs</h2>
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>ID Place</th>
-            <th>Type</th>
-            <th>Statut Capteur</th>
-            <th>Action Manuelle</th>
-          </tr>
-        </thead>
-        <tbody id="admin-table-body"></tbody>
-      </table>
-    </div>
+  <h2 style="font-size: 2.5rem; margin-bottom: 40px; color: #2d3436; font-weight: 900;">Panel de Contrôle Matériel</h2>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Zone</th>
+        <th>Capteur ID</th>
+        <th>Type</th>
+        <th>État Physique</th>
+        <th>Action Manuelle</th>
+      </tr>
+    </thead>
+    <tbody id="admin-table-body"></tbody>
+  </table>
+  <div style="text-align: center;">
+    <button class="btn-submit" style="margin-top: 40px; background-color: #2d3436; width: auto; padding: 15px 40px;" onclick="showHome()">Retour au site public</button>
   </div>
 </div>
+
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <h2>Accès Administrateur</h2>
+    <input type="password" id="admin-password" placeholder="Mot de passe" class="form-control" style="margin-bottom: 20px; text-align: center; letter-spacing: 5px; font-size: 1.2rem;">
+    <button class="btn-submit" style="width: 100%; margin-bottom: 15px;" onclick="loginAdmin()">Connexion sécurisée</button>
+    <button class="btn-small" style="width: 100%; padding: 12px;" onclick="closeModals()">Annuler</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="ticket-modal">
+  <div class="modal">
+    <h2 style="color: #2ecc71;">Réservation Confirmée !</h2>
+    <p style="color: #636e72; margin-bottom: 25px; line-height: 1.5;">Votre place est réservée. Le capteur a été mis à jour dans notre base de données.</p>
+    <div style="background: white; padding: 20px; border-radius: 12px; display: inline-block; margin-bottom: 25px; border: 1px solid #f1f2f6; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=ParkEase" alt="QR Code">
+    </div>
+    <h3 id="modal-spot-name" style="font-size: 3rem; margin-bottom: 30px; color: #0984e3; font-weight: 900;"></h3>
+    <button class="btn-submit" style="width: 100%;" onclick="closeModals()">Terminer</button>
+  </div>
+</div>
+
+<div id="toast-container"></div>
 
 <script>
 let spots = [];
 let selectedSpotId = null;
+let currentZone = 'A';
+let pollInterval;
 
-const userView = document.getElementById('user-view');
-const adminView = document.getElementById('admin-view');
-const btnGoAdmin = document.getElementById('btn-go-admin');
-const btnGoUser = document.getElementById('btn-go-user');
-const userParkingGrid = document.getElementById('user-parking-grid');
-const adminTableBody = document.getElementById('admin-table-body');
-const selectedSpotDisplay = document.getElementById('selected-spot-display');
-const btnReserve = document.getElementById('btn-reserve');
+function showToast(message) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `✓ ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.remove(); }, 3000);
+}
+
+function showHome() {
+  document.getElementById('main-view').style.display = 'block';
+  document.getElementById('admin-view').style.display = 'none';
+}
+
+function showAdminLogin() {
+  document.getElementById('login-modal').style.display = 'flex';
+}
+
+function loginAdmin() {
+  const pwd = document.getElementById('admin-password').value;
+  if (pwd === '1234') {
+    document.getElementById('login-modal').style.display = 'none';
+    document.getElementById('main-view').style.display = 'none';
+    document.getElementById('admin-view').style.display = 'block';
+    document.getElementById('admin-password').value = '';
+    window.scrollTo(0, 0);
+  } else {
+    showToast('Mot de passe incorrect');
+  }
+}
+
+function closeModals() {
+  document.getElementById('login-modal').style.display = 'none';
+  document.getElementById('ticket-modal').style.display = 'none';
+  selectedSpotId = null;
+  document.getElementById('btn-confirm-spot').style.display = 'none';
+  renderUserGrid();
+}
+
+function changeZone(zone) {
+  currentZone = zone;
+  selectedSpotId = null;
+  document.getElementById('btn-confirm-spot').style.display = 'none';
+  
+  const buttons = document.querySelectorAll('.btn-zone');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  renderUserGrid();
+}
 
 async function chargerPlaces() {
   try {
     const reponse = await fetch('/api/spots');
-    const donnees = await reponse.json();
-    spots = donnees;
+    spots = await reponse.json();
     renderUserGrid();
     renderAdminTable();
   } catch (erreur) {
@@ -136,9 +424,8 @@ async function chargerPlaces() {
 
 async function syncWithHardwareAPI(spotId) {
   try {
-    await fetch(`/api/spots/${spotId}/toggle`, {
-      method: 'POST'
-    });
+    await fetch(`/api/spots/${spotId}/toggle`, { method: 'POST' });
+    showToast(`Mise à jour capteur effectuée`);
     chargerPlaces();
   } catch (erreur) {
     console.error(erreur);
@@ -146,89 +433,68 @@ async function syncWithHardwareAPI(spotId) {
 }
 
 function renderUserGrid() {
-  userParkingGrid.innerHTML = '';
-  spots.forEach(spot => {
+  const grid = document.getElementById('user-parking-grid');
+  grid.innerHTML = '';
+  
+  const spotsInZone = spots.filter(spot => spot.zone === currentZone);
+  
+  spotsInZone.forEach(spot => {
     const div = document.createElement('div');
     div.className = `spot ${spot.status}`;
-    if (spot.id === selectedSpotId) {
-      div.classList.add('selected');
-    }
+    if (spot.id === selectedSpotId) div.classList.add('selected');
     
-    div.innerHTML = `${spot.id}<br><span>${spot.type || 'Standard'}</span>`;
+    div.innerHTML = `<div>${spot.id}</div><span>${spot.type || 'Standard'}</span>`;
     
     div.addEventListener('click', () => {
       if (spot.status === 'free') {
         selectedSpotId = spot.id;
-        selectedSpotDisplay.value = spot.id;
+        document.getElementById('btn-confirm-spot').style.display = 'inline-block';
         renderUserGrid();
+      } else {
+        showToast('Place occupée');
       }
     });
-    
-    userParkingGrid.appendChild(div);
+    grid.appendChild(div);
   });
 }
 
 function renderAdminTable() {
-  adminTableBody.innerHTML = '';
+  const tbody = document.getElementById('admin-table-body');
+  tbody.innerHTML = '';
+  
   spots.forEach(spot => {
     const tr = document.createElement('tr');
-    
-    const tdId = document.createElement('td');
-    tdId.textContent = spot.id;
-    tdId.style.fontWeight = '700';
-    tdId.style.color = 'var(--text-main)';
-    
-    const tdType = document.createElement('td');
-    tdType.textContent = spot.type || 'Standard';
-    
-    const tdStatus = document.createElement('td');
-    const badge = document.createElement('span');
-    badge.className = `status-badge ${spot.status}`;
-    badge.innerHTML = spot.status === 'free' ? '🟢 Libre' : '🔴 Occupée';
-    tdStatus.appendChild(badge);
-    
-    const tdAction = document.createElement('td');
-    const btnToggle = document.createElement('button');
-    btnToggle.className = 'btn btn-outline';
-    btnToggle.style.padding = '0.4rem 0.8rem';
-    btnToggle.style.fontSize = '0.85rem';
-    btnToggle.textContent = 'Inverser état';
-    btnToggle.addEventListener('click', () => {
-      syncWithHardwareAPI(spot.id);
-    });
-    tdAction.appendChild(btnToggle);
-    
-    tr.appendChild(tdId);
-    tr.appendChild(tdType);
-    tr.appendChild(tdStatus);
-    tr.appendChild(tdAction);
-    
-    adminTableBody.appendChild(tr);
+    tr.innerHTML = `
+      <td style="font-weight:800; color:#b2bec3;">Zone ${spot.zone}</td>
+      <td style="font-weight:900; color:#2d3436; font-size:1.1rem;">${spot.id}</td>
+      <td>${spot.type || 'Standard'}</td>
+      <td><span class="badge ${spot.status}">${spot.status === 'free' ? 'Libre' : 'Occupée'}</span></td>
+      <td><button class="btn-small">Inverser le capteur</button></td>
+    `;
+    tr.querySelector('button').addEventListener('click', () => syncWithHardwareAPI(spot.id));
+    tbody.appendChild(tr);
   });
 }
 
-btnGoAdmin.addEventListener('click', () => {
-  userView.style.display = 'none';
-  adminView.style.display = 'block';
-});
-
-btnGoUser.addEventListener('click', () => {
-  adminView.style.display = 'none';
-  userView.style.display = 'block';
-});
-
-btnReserve.addEventListener('click', () => {
-  if (!selectedSpotId) {
-    alert('Veuillez sélectionner une place libre sur le plan.');
+document.getElementById('btn-confirm-spot').addEventListener('click', () => {
+  if (!document.getElementById('plate-input').value) {
+    showToast('Veuillez renseigner votre plaque');
     return;
   }
-  alert(`Simulation : Réservation envoyée pour la place ${selectedSpotId}`);
-  selectedSpotId = null;
-  selectedSpotDisplay.value = '';
-  renderUserGrid();
+  document.getElementById('modal-spot-name').textContent = selectedSpotId;
+  document.getElementById('ticket-modal').style.display = 'flex';
+  syncWithHardwareAPI(selectedSpotId);
+});
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', function() {
+    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+    this.parentElement.classList.add('active');
+  });
 });
 
 chargerPlaces();
+pollInterval = setInterval(chargerPlaces, 3000);
 </script>
 </body>
 </html>
