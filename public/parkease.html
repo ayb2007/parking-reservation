@@ -89,9 +89,10 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .pricing-price { font-size: 3.5rem; font-weight: 900; color: #2d3436; margin-bottom: 25px; }
 .pricing-price span { font-size: 1.2rem; color: #b2bec3; font-weight: 600; }
 .pricing-card.premium .pricing-price { color: #0984e3; }
-.pricing-features { list-style: none; margin-bottom: 35px; text-align: left; }
-.pricing-features li { padding: 12px 0; border-bottom: 1px solid #f1f2f6; color: #636e72; font-weight: 500; }
-.pricing-features li::before { content: '✓'; color: #2ecc71; margin-right: 12px; font-weight: 900; }
+
+.pricing-features { list-style: none; margin: 0 0 35px 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+.pricing-features li { padding: 12px 0; border-bottom: 1px solid #f1f2f6; color: #636e72; font-weight: 500; width: 100%; display: flex; align-items: center; justify-content: center; }
+.pricing-features li::before { content: '✓'; color: #2ecc71; margin-right: 10px; font-weight: 900; }
 
 .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; background: #ffffff; padding: 50px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid #f1f2f6; }
 .contact-info h3 { font-size: 1.6rem; margin-bottom: 25px; color: #0984e3; font-weight: 900; }
