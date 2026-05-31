@@ -8,7 +8,6 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
 body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-behavior: smooth; }
-
 .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; background-color: #ffffff; border-bottom: 1px solid #e1e8ed; position: sticky; top: 0; z-index: 2000; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
 .brand { font-size: 1.5rem; font-weight: 900; display: flex; align-items: center; gap: 10px; color: #2d3436; }
 .brand-icon { background: #0984e3; color: white; padding: 5px 10px; border-radius: 50%; font-weight: 900; }
@@ -18,13 +17,10 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .nav-links li.active a { color: #0984e3; border-bottom: 2px solid #0984e3; padding-bottom: 5px; }
 .admin-icon { font-size: 1.2rem; cursor: pointer; opacity: 0.3; transition: 0.3s; color: #2d3436; }
 .admin-icon:hover { opacity: 1; color: #0984e3; }
-
 .section-padding { padding: 80px 50px; max-width: 1400px; margin: 0 auto; }
 .section-title { font-size: 2.5rem; font-weight: 900; text-align: center; margin-bottom: 50px; text-transform: uppercase; color: #2d3436; }
 .section-title span { color: #0984e3; }
-
 .hero-section { display: flex; justify-content: center; align-items: flex-start; gap: 50px; padding: 60px 50px; max-width: 1400px; margin: 0 auto; min-height: 80vh; }
-
 .booking-card { width: 450px; background: #ffffff; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); overflow: hidden; position: relative; z-index: 10; border: 1px solid #f1f2f6; }
 .tabs { display: flex; background: #f5f7fa; }
 .tab { flex: 1; padding: 15px; text-align: center; font-weight: 600; color: #b2bec3; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
@@ -40,7 +36,6 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .price-display { font-size: 1.5rem; font-weight: 800; color: #0984e3; background: #e0f2fe; padding: 10px 20px; border-radius: 8px; width: 45%; text-align: center; }
 .btn-submit { background-color: #0984e3; color: white; border: none; padding: 15px; width: 50%; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; text-align: center; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2); }
 .btn-submit:hover { background-color: #076ebc; transform: translateY(-2px); }
-
 .hero-content { width: 500px; padding-top: 20px; }
 .hero-content h1 { font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 15px; color: #2d3436; }
 .hero-content h1 span { background-color: #0984e3; color: white; padding: 0 10px; border-radius: 5px; display: inline-block; transform: rotate(-2deg); margin-top: 5px; }
@@ -50,27 +45,20 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .feature-icon { width: 45px; height: 45px; background: #e0f2fe; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; color: #0984e3; }
 .feature-text h4 { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: #2d3436; }
 .feature-text p { font-size: 0.9rem; color: #636e72; }
-
 .interactive-section { background-color: #ffffff; border-top: 1px solid #f1f2f6; border-bottom: 1px solid #f1f2f6; }
-.zone-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-.btn-zone { background: #ffffff; color: #636e72; border: 2px solid #dfe6e9; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 700; transition: 0.3s; }
-.btn-zone:hover { border-color: #0984e3; color: #0984e3; }
-.btn-zone.active { background: #0984e3; border-color: #0984e3; color: white; box-shadow: 0 10px 20px rgba(9, 132, 227, 0.2); }
-.parking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; }
+.parking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; max-width: 600px; margin: 0 auto; }
 .spot { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; cursor: pointer; border: 2px solid transparent; transition: 0.3s; background: #f9fbfd; }
 .spot span { font-size: 0.8rem; font-weight: 500; margin-top: 5px; }
 .spot.free { background: #e8f8f5; border-color: #2ecc71; color: #2ecc71; }
 .spot.free:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(46, 204, 113, 0.15); }
 .spot.taken { background: #fff0f0; border-color: #ff7675; color: #ff7675; cursor: not-allowed; opacity: 0.7; }
 .spot.selected { background: #0984e3; color: white; border-color: #0984e3; transform: scale(1.05); box-shadow: 0 10px 20px rgba(9, 132, 227, 0.3); }
-
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
 .service-card { background: #ffffff; padding: 40px 30px; border-radius: 12px; text-align: center; transition: 0.3s; border: 1px solid #f1f2f6; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
 .service-card:hover { transform: translateY(-10px); border-color: #0984e3; box-shadow: 0 20px 40px rgba(9, 132, 227, 0.1); }
 .service-icon { font-size: 3.5rem; margin-bottom: 20px; }
 .service-card h3 { margin-bottom: 15px; font-size: 1.2rem; color: #2d3436; font-weight: 800; }
 .service-card p { color: #636e72; font-size: 0.95rem; line-height: 1.6; }
-
 .pro-section { background-color: #fffaf0; border-top: 4px solid #f39c12; }
 .pro-container { display: flex; align-items: center; gap: 50px; }
 .pro-content { flex: 1; }
@@ -79,7 +67,6 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .pro-list { list-style: none; margin-bottom: 35px; }
 .pro-list li { margin-bottom: 12px; font-weight: 600; color: #2d3436; display: flex; align-items: center; }
 .pro-list li::before { content: '✓'; color: #f39c12; margin-right: 12px; font-weight: 900; font-size: 1.2rem; background: #ffebd2; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-
 .tarifs-section { background-color: #ffffff; }
 .pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; max-width: 900px; margin: 0 auto; }
 .pricing-card { background: #ffffff; border-radius: 15px; padding: 40px; text-align: center; border: 1px solid #f1f2f6; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
@@ -89,16 +76,13 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .pricing-price { font-size: 3.5rem; font-weight: 900; color: #2d3436; margin-bottom: 25px; }
 .pricing-price span { font-size: 1.2rem; color: #b2bec3; font-weight: 600; }
 .pricing-card.premium .pricing-price { color: #0984e3; }
-
 .pricing-features { list-style: none; margin: 0 0 35px 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
 .pricing-features li { padding: 12px 0; border-bottom: 1px solid #f1f2f6; color: #636e72; font-weight: 500; width: 100%; display: flex; align-items: center; justify-content: center; }
 .pricing-features li::before { content: '✓'; color: #2ecc71; margin-right: 10px; font-weight: 900; }
-
 .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; background: #ffffff; padding: 50px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid #f1f2f6; }
 .contact-info h3 { font-size: 1.6rem; margin-bottom: 25px; color: #0984e3; font-weight: 900; }
 .contact-info p { margin-bottom: 15px; color: #636e72; display: flex; align-items: center; gap: 12px; font-size: 1.05rem; font-weight: 500; }
 .contact-form textarea { resize: vertical; min-height: 140px; }
-
 #admin-view { display: none; padding: 60px 50px; max-width: 1200px; margin: 0 auto; background: #ffffff; min-height: 100vh; }
 .admin-table { width: 100%; border-collapse: collapse; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #dfe6e9; }
 .admin-table th, .admin-table td { padding: 18px; text-align: left; border-bottom: 1px solid #f1f2f6; }
@@ -109,13 +93,11 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 .badge.taken { background: #fff0f0; color: #ff7675; }
 .btn-small { background: #f5f7fa; color: #2d3436; border: 1px solid #dfe6e9; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; }
 .btn-small:hover { background: #0984e3; color: white; border-color: #0984e3; }
-
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 52, 54, 0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 3000; }
 .modal { background: #ffffff; padding: 40px; border-radius: 15px; text-align: center; width: 420px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
 .modal h2 { margin-bottom: 20px; color: #2d3436; font-weight: 900; }
 .modal input { width: 100%; padding: 12px; margin-bottom: 20px; background: #f9fbfd; border: 1px solid #dfe6e9; color: #2d3436; border-radius: 8px; font-weight: 500; }
 .modal .btn-submit { width: 100%; }
-
 #toast-container { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 9999; }
 .toast { background: #ffffff; border-left: 5px solid #0984e3; padding: 15px 25px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); color: #2d3436; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease-out forwards; }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -195,12 +177,6 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
     <h2 class="section-title">Plan <span>Interactif</span></h2>
     <p style="text-align: center; color: #636e72; margin-bottom: 40px; font-size: 1.1rem;">Sélectionnez votre emplacement. Les places se mettent à jour automatiquement via nos capteurs.</p>
     
-    <div class="zone-selector" id="zone-buttons">
-      <button class="btn-zone active" onclick="changeZone('A')">Niveau 1 (Zone A)</button>
-      <button class="btn-zone" onclick="changeZone('B')">Niveau 2 (Zone B)</button>
-      <button class="btn-zone" onclick="changeZone('C')">Niveau 3 (Zone C)</button>
-    </div>
-
     <div style="max-width: 320px; margin: 0 auto 30px auto;">
       <input type="text" id="plate-input" class="form-control" placeholder="Votre plaque d'immatriculation" style="text-align: center; font-size: 1.1rem; text-transform: uppercase;">
     </div>
@@ -239,7 +215,7 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
         <h3>SOLUTIONS B2B & ENTREPRISES</h3>
         <p>Vous gérez une flotte de véhicules ou vous souhaitez offrir des places garanties à vos collaborateurs ? ParkEase propose des solutions sur-mesure pour les entreprises.</p>
         <ul class="pro-list">
-          <li>Privatisation d'étages complets (Zone B, Zone C)</li>
+          <li>Privatisation de l'espace complet</li>
           <li>Interface de gestion de flotte dédiée</li>
           <li>Facturation mensuelle centralisée</li>
           <li>Badges d'accès coupe-file illimités</li>
@@ -274,7 +250,7 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
         <div class="pricing-price">45€<span>/mois</span></div>
         <ul class="pricing-features">
           <li>Accès illimité 24/7</li>
-          <li>Places prioritaires Niveau 1</li>
+          <li>Places prioritaires</li>
           <li>Badge RFID inclus</li>
         </ul>
         <a href="#contact" class="btn-submit" style="width: 100%;">Nous contacter</a>
@@ -318,7 +294,6 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
   <table class="admin-table">
     <thead>
       <tr>
-        <th>Zone</th>
         <th>Capteur ID</th>
         <th>Type</th>
         <th>État Physique</th>
@@ -358,7 +333,6 @@ body { background-color: #f4f7f6; color: #2d3436; overflow-x: hidden; scroll-beh
 <script>
 let spots = [];
 let selectedSpotId = null;
-let currentZone = 'A';
 let pollInterval;
 
 function showToast(message) {
@@ -400,18 +374,6 @@ function closeModals() {
   renderUserGrid();
 }
 
-function changeZone(zone) {
-  currentZone = zone;
-  selectedSpotId = null;
-  document.getElementById('btn-confirm-spot').style.display = 'none';
-  
-  const buttons = document.querySelectorAll('.btn-zone');
-  buttons.forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  renderUserGrid();
-}
-
 async function chargerPlaces() {
   try {
     const reponse = await fetch('/api/spots');
@@ -437,9 +399,7 @@ function renderUserGrid() {
   const grid = document.getElementById('user-parking-grid');
   grid.innerHTML = '';
   
-  const spotsInZone = spots.filter(spot => spot.zone === currentZone);
-  
-  spotsInZone.forEach(spot => {
+  spots.forEach(spot => {
     const div = document.createElement('div');
     div.className = `spot ${spot.status}`;
     if (spot.id === selectedSpotId) div.classList.add('selected');
@@ -466,7 +426,6 @@ function renderAdminTable() {
   spots.forEach(spot => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td style="font-weight:800; color:#b2bec3;">Zone ${spot.zone}</td>
       <td style="font-weight:900; color:#2d3436; font-size:1.1rem;">${spot.id}</td>
       <td>${spot.type || 'Standard'}</td>
       <td><span class="badge ${spot.status}">${spot.status === 'free' ? 'Libre' : 'Occupée'}</span></td>
